@@ -131,7 +131,7 @@ codec-lib = lean-codec.packages.${system}.native;
 For the dev loop (no flakes), Lake resolves deps via `require … from git`:
 
 ```lean
-require codec from git "https://github.com/dysinger/lean-codec.git" @ "main"
+require codec from git "https://github.com/dysinger/lean-codec.git" @ "master"
 ```
 
 ## License
