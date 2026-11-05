@@ -57,11 +57,11 @@ the Pulse leaf (Pulse is an F*-specific mutable-heap construct with no Lean
 counterpart; in Lean the extractable leaf is the `cli` executable's
 C-extraction seam):
 
-| Module               | Layer          | Purpose                                             |
-| -------------------- | -------------- | --------------------------------------------------- |
-| `Example.Count.Types`| pure spec      | `count` over `UInt8` + `lemma_count_empty`          |
-| `Example.Count`      | pure algorithm | tail-recursive `countAcc` + `countAcc_eq_count`     |
-| `Example.Count.CLI`  | CLI entry      | `main` over a fixed byte string, returns exit status|
+| Module                | Layer          | Purpose                                              |
+| --------------------- | -------------- | ---------------------------------------------------- |
+| `Example.Count.Types` | pure spec      | `count` over `UInt8` + `lemma_count_empty`           |
+| `Example.Count`       | pure algorithm | tail-recursive `countAcc` + `countAcc_eq_count`      |
+| `Example.Count.CLI`   | CLI entry      | `main` over a fixed byte string, returns exit status |
 
 - `Example.Count.Types` defines `count b xs` (the number of `b` occurrences)
   over `UInt8` — the `codec` substrate's element type — and proves the empty
@@ -73,8 +73,8 @@ C-extraction seam):
   `[0, 1, 0, 2, 0, 1, 0]` string (expecting `4` zeros) and exits `0` on a
   match, `1` otherwise. It is the `cli` executable's `main`.
 
-The example is deliberately small so the *correctness theorem is actually
-proved*, not stated as prose: unlike the F* template's Boyer–Moore example
+The example is deliberately small so the _correctness theorem is actually
+proved_, not stated as prose: unlike the F* template's Boyer–Moore example
 (whose deep invariant is left unproved), `countAcc_eq_count` is a short
 induction.
 

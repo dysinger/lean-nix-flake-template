@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   proved `countAcc_eq_count`), and `Example.Count.CLI` (the `cli` entry point).
   The F* `Example.Majority.Pulse` leaf is omitted (Pulse has no Lean
   counterpart). The example domain is small enough that its correctness theorem
-  is actually *proved* (a one-line induction), unlike the F* Boyer–Moore
+  is actually _proved_ (a one-line induction), unlike the F* Boyer–Moore
   example whose deep invariant is left as prose.
 
 ### Notes
