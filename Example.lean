@@ -19,3 +19,7 @@ repository `README.md` for the build workflow and the "Renaming" guide.
 
 import Example.Count.Types
 import Example.Count
+-- Imported so a bare `lake build` type-checks the executable's module too: `cli`
+-- is a separate target, and a `sorry` in it must fail the same build the proof
+-- gate is claimed to guard (`codec-audit-round-three` §2.2.1).
+import Example.Count.CLI
