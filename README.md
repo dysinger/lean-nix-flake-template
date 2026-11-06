@@ -128,6 +128,21 @@ codec-src = lean-codec;
 codec-lib = lean-codec.packages.${system}.native;
 ```
 
+### Proving the gate is load-bearing
+
+The zero-`sorry` claim above is worth only what its falsification costs, so the
+template ships the check that falsifies it:
+
+```bash
+./scripts/verify-sorry-gate.sh
+```
+
+It asserts `lakefile.lean` carries `-DwarningAsError=true`, appends a stubbed
+`sorry` and requires the build to **fail**, then restores the file and requires
+the build to be green again. Exit 0 means the gate fires; exit 1 means the claim
+in this README is false. It mutates a source file, so it is a manual/CI check and
+not a `checks` entry.
+
 For the dev loop (no flakes), Lake resolves deps via `require … from git`:
 
 ```lean
