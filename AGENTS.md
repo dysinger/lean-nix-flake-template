@@ -32,9 +32,13 @@ Quot.sound]` only — never `Classical.choice`, never `native_decide`, never
    `nix fmt` and **rejects** the commit if it reformats a staged file; re-`git add`
    and commit again — that is normal, not a failure.
 4. **`flake.lock` is tracked; `lake-manifest.json` is not.** The lock is the only
-   reproducibility anchor. `src = ./.` in `default.nix` snapshots only
-   **git-tracked** files, so a new `.c`/data file must be committed or the
-   sandboxed build will not see it.
+   reproducibility anchor. **The "only git-tracked files are visible" rule holds for
+   the flake path specifically.** `default.nix`'s `src = ./.` is reached both ways,
+   but `./.` means different things: through the flake it is the **git tree snapshot**
+   in the Nix store, so a new `.c`/data file must be committed or `nix build .#…`
+   will not see it; through a bare `nix-build` / `import ./default.nix` it is the
+   **whole directory**, untracked files included. The unqualified sentence was
+   therefore false for the second path (`codec-audit-round-six` R7-30).
 
 ## The two-layer trust posture
 
@@ -53,14 +57,18 @@ Quot.sound]` only — never `Classical.choice`, never `native_decide`, never
 
 ```bash
 nix develop --command lake build          # the proof gate: zero sorry/warnings
-nix develop --command lake build bench    # the bench lane: COMPILES only
 ```
 
-- `lake build bench` **only compiles**. If your bench lane value-checks vectors,
-  that evidence counts only when something **runs** it — see `default.nix`'s
-  `bench` `installPhase`, which runs the executable. Keep such a lane a
-  **package**, never a `checks` entry: a value check is evidence, not proof, and
-  must not be able to fail the proof gate.
+- **This template ships no bench lane.** `default.nix` here has no `bench` package
+  and `lakefile.lean` has no `bench` target, so an instruction to run
+  `lake build bench` would name machinery a fork does not have
+  (`codec-audit-round-six` R7-30). The paragraph that used to sit here described
+  `default.nix`'s `bench` `installPhase` — that is `../lean-basen`'s derivation, not
+  this one, and it is reproduced here only as guidance: **if** you add a lane whose
+  checks value-compare known vectors, keep it a **package**, never a `checks` entry,
+  because a value check is evidence, not proof and must not be able to fail the proof
+  gate. Note that in `basen` those checks fire at _build_ time (`rfl` and
+  `native_decide` both elaborate), so building the lane is what runs them.
 - `nix flake check` is a **per-repo** command. Do not assume the parent project's
   checks set applies.
 - `lake build` printing `Replayed` after you edited an imported module means it is
