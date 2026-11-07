@@ -18,9 +18,12 @@ lean_lib demo where
 
   This line is what makes this README's "a build that encounters a `sorry` fails"
   (`:50`) and `default.nix`'s "the Lean proof-validation gate (`lake build` with no
-  `sorry`)" true. Until `codec-audit-round-three` §2.2.1 it was **absent**, so the
-  claim was false for every project scaffolded from this template — and the flag
-  belongs on the *library* so each is fixed by construction. Do not remove it. -/
+  `sorry`)" true. **It was absent before 2026-11-06**, so the claim was false for
+  every project scaffolded from this template until then; the flag belongs on the
+  *library* so each project is fixed by construction. (The finding was recorded in
+  the sibling `lean-codec` repo's `codec-audit-round-three` ledger §2.2.1 — cited
+  here only as provenance; a fork cannot resolve that repo, which is why the
+  sentence is self-contained.) Do not remove it. -/
   moreLeanArgs := #["-DwarningAsError=true"]
 
 /-- The packaged command-line executable: `Example.Count.CLI.main`.  Mirrors
