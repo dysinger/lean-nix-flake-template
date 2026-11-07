@@ -38,3 +38,11 @@ module, so the library build reaches it even if this is ever dropped.) -/
 @[default_target]
 lean_exe cli where
   root := `Example.Count.CLI
+  /- **The proof-gate flag, on the executable root too.** `Example/Count/CLI.lean`
+  is compiled twice — once as part of `lean_lib demo` (which imports it) and once as
+  this executable's root — and a `sorry` in it must fail *both*. Attaching the flag
+  only to the library would make the gate depend on the library importing the CLI
+  module: drop that `import` and `lake build` goes green while `nix build .#cli`
+  ships a `sorry`. The template spec requires every compilation of a module the gate
+  claims to cover to carry the flag (`codec-audit-round-six` R7-30). -/
+  moreLeanArgs := #["-DwarningAsError=true"]
